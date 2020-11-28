@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gomoku</title>
+    <script src="js/jquery.js"></script>
+</head>
+
+<body>
+<div>
+    <img id="hint" src="pic/line.png" hidden="hidden">
+    <div id="cubes">
+    </div>
+    <img src="pic/board.jpg" width="450px" height="450px">
+    <div>
+        <button onclick="rollback();" type="button">悔棋 (BACK)</button>
+        <button onclick="start();" type="button">重新开始 (RESTART)</button>
+    </div>
+</div>
+</body>
+<script>
+    var steps_string = "";
+    var init_steps = findGetParameter("init_steps");
+    if(init_steps != null){
+        steps_string = init_steps;
+    }
+
+    var init_steps = steps_string.split("_");
+    var gameOver = false;
+    var level = "HIGH";
+    var thinking = false;
+    var historyStack = new Array();
+    var aiColor = "BLACK";
+    var rollbackTime = 0;
+    var gameId = guid();
+
+    var content = "";
+    for (i = 0; i < 15; i++) {
+        content = content + "<div>";
+        for (j = 0; j < 15; j++) {
+            content = content + "<img tag='.' lx='" + i + "' ly='" + j + "'  onClick='onClickCube(this)' id='" + i + "-" + j + "' style='" + getLocation(i, j) + "' src='pic/blank.png'>"
+        }
+        content = content + "</div>";
+    }
+    $("#cubes").html(content);
+
+    //listen();
+    start();
+    function findGetParameter(parameterName) {
+        var result = null,
+            tmp = [];
+        location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+          tmp = item.split("=");
+          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+        return result;
+    }
+
+    // steps is array of string, [a1, b2]
+    function init(steps){
+        steps_len = steps.length;
+        for (var i = 0; i < steps_len; i++) {
+            x = steps[i].charCodeAt(0) - "a".charCodeAt(0);
+            y = parseInt(steps[i].substring(1)) - 1;
+            color = aiColor;
+            if(i % 2){
+                color = getOtherColor(aiColor);
+            }else{
+                color = aiColor;
+            }
+            setColor(x, y, getColorChar(color));
+        }
+    }
+
+    function historyStack2stepsString(history){
+        var stepString = "";
+        for (i = 0; i < history.length; i++) {
+            char_x = String.fromCharCode(history[i].x + "a".charCodeAt(0));
+            y_start_1 = history[i].y + 1;
+            stepString = stepString + "_" + char_x + y_start_1;
+        }
+        return stepString;
+    }
+
+    function start() {
+        if (thinking) {
+            alert("正在计算中...请稍后");
+            return;
+        }
+        gameOver = false;
+        historyStack = new Array();
+        for (i = 0; i < 15; i++)
+            for (j = 0; j < 15; j++) {
+                var id = "#" + i + "-" + j;
+                $(id).attr("tag", ".");
+                $(id).attr("src", "pic/blank.png");
+            }
+        init(init_steps);
+        console.log("history stack length " + historyStack.length)
+        if(historyStack.length % 2 == 0){
+            console.log("request for the beginning board")
+            submit();
+        }
+    }
+
+    function rollback(x, y, color) {
+        rollbackTime++;
+        if (gameOver || thinking) {
+            return;
+        }
+        if (historyStack.length < 2) {
+            return;
+        }
+        var id;
+        var pointWhite = historyStack.pop();
+        id = "#" + pointWhite.x + "-" + pointWhite.y;
+        $(id).attr("tag", ".");
+        $(id).attr("src", "pic/blank.png");
+
+        var pointBlack = historyStack.pop();
+        id = "#" + pointBlack.x + "-" + pointBlack.y;
+        $(id).attr("tag", ".");
+        $(id).attr("src", "pic/blank.png");
+
+        if (historyStack.length > 0) {
+            var lastHit = historyStack[historyStack.length - 1];
+            moveHint(lastHit.x, lastHit.y);
+        } else {
+            hiddenHint();
+        }
+    }
+
+    function setColor(x, y, color) {
+        var id = "#" + x + "-" + y;
+        if (color == "×") {
+            $(id).attr("tag", color);
+            $(id).attr("src", "pic/black.png");
+        }
+        if (color == "●") {
+            $(id).attr("tag", color);
+            $(id).attr("src", "pic/white.png");
+        }
+        moveHint(x, y);
+        var point = {
+            "x": x,
+            "y": y
+        }
+        historyStack.push(point);
+        winCheck(historyStack);
+    }
+
+    function getOtherColor(color) {
+        if (color == "WHITE") {
+            return "BLACK";
+        }
+        if (color == "BLACK") {
+            return "WHITE";
+        }
+        return null;
+    }
+
+    function getColorChar(color) {
+        if (color == "WHITE") {
+            return "●";
+        }
+        if (color == "BLACK") {
+            return "×";
+        }
+        return null;
+    }
+
+    function onClickCube(obj) {
+        if (thinking) {
+            alert("正在计算中...请稍后");
+            return;
+        }
+        if (gameOver) {
+            return;
+        }
+        var id = obj.id;
+        var x = parseInt(id.split("-")[0]);
+        var y = parseInt(id.split("-")[1]);
+        if ($("#" + id).attr("tag") == ".") {
+            setColor(x, y, getColorChar(getOtherColor(aiColor)));
+            submit();
+        }
+    }
+
+    function getLocation(x, y) {
+        var boundary = 17;
+        var between = 29;
+        var size = 25;
+        var left = between * x + boundary;
+        var top = between * y + boundary;
+        return "position:absolute;left:" + left + "px;top:" + top + "px;width:" + size + "px;height:" + size + "px"
+    }
+
+    function moveHint(x, y) {
+        $("#hint").removeAttr("hidden");
+        $("#hint").attr("style", getLocation(x, y));
+        $("#hint").attr("style", getLocation(x, y));
+    }
+
+    function hiddenHint() {
+        $("#hint").attr("hidden", "hidden");
+    }
+
+    function submit() {
+        var stepsString = historyStack2stepsString(historyStack);
+        var params = {
+            "stepsString": stepsString,
+            "color": aiColor,
+            "level": level,
+            "gameId": gameId
+        }
+
+        thinking = true;
+        $.ajax({
+            type: "GET",
+            url: "/",
+            data: params,
+            datatype: "json",
+            success: function (data) {
+                if (data != null && data != "") {
+                    setColor(data.x, data.y, getColorChar(aiColor));
+                }
+                thinking = false;
+            },
+            error: function () {
+                thinking = false;
+            }
+        });
+    }
+
+    function point2str(point){
+        return point.x + "," + point.y;
+    }
+
+    function winCheckForOneSide(oneSideArr){
+        let mySet = new Set(); // use string as the element, so that it can be retrieved natively
+        let dirs = [[0, 1], [1, 0], [1, 1], [1, -1]];
+        for(i = 0; i < oneSideArr.length; i++){
+            mySet.add(point2str(oneSideArr[i]));
+        }
+        for(x = 0; x < 15; x++){
+            for(y = 0; y < 15; y++){
+                if(mySet.has(point2str({x: x, y: y}))){
+                    for(d = 0; d < dirs.length; d++){
+                        var w = true;
+                        for(c = 1; c < 5; c++){
+                            next_point = {x: x + dirs[d][0]*c, y: y + dirs[d][1]*c};
+                            if(!mySet.has(point2str(next_point))){
+                                w = false;
+                                break;
+                            }
+                        }
+                        if(w){return true;}
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    console.assert(!winCheckForOneSide([{x: 7, y: 2}, {x: 7, y: 3}, {x: 7, y: 4}]));
+    console.assert(winCheckForOneSide([{x: 7, y: 0}, {x: 7, y: 1}, {x: 7, y: 2}, {x: 7, y: 3}, {x: 7, y: 4}]));
+
+    function winCheck(historyArr) {
+    /*
+    first is black, second is white etc
+    */
+        var blackArr = Array();
+        var whiteArr = Array();
+        for(i = 0; i < historyArr.length; i++){
+            if(i % 2 == 0){
+                blackArr.push(historyArr[i]);
+            }else{
+                whiteArr.push(historyArr[i]);
+            }
+        }
+        console.log("white length " + whiteArr.length);
+        if (winCheckForOneSide(blackArr)) {
+            alert("黑棋胜利");
+            thinking = false;
+        }
+        if (winCheckForOneSide(whiteArr)) {
+            alert("白棋胜利");
+            thinking = false;
+        }
+    }
+
+    function listen() {
+        setInterval(function () {
+            if (!thinking) {
+                $("#progress").html("空闲");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "../api/gomoku/getProgress",
+                data: { "gameId": gameId },
+                datatype: "json",
+                async: false,
+                success: function (data) {
+                    if (data == null) {
+                        return;
+                    }
+                    if (data == true){
+                        progress = "计算中...";
+                    }
+                    if (data == false) {
+                        progress = "等待中...";
+                    }
+                    $("#progress").html(progress);
+                    console.info(JSON.stringify(data));
+                },
+                error: function () {
+                }
+            });
+        }, 300);
+    }
+
+    function guid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+</script>
+</html>
