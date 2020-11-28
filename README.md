@@ -53,7 +53,7 @@ tail -f gomoku/script/run.py.log
 if nothing print, the board get solved, if not then you need to solve
 listed board in "AND" node
 
-4. for the listed board, go 1) step to solve it, you need find guided move yourself
+4. for the listed board, go step 1 to solve it, you need find guided move yourself
 
 5. tested in UI by launching it locally
 ```bash
