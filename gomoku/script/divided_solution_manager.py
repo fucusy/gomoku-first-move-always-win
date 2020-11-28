@@ -592,7 +592,7 @@ class ZobristHash():
 global z
 z = ZobristHash()
 def board_str_hash(board_str):
-    return z.hash(board_str)
+    return board_str
 
 
 def get_all_step_str2action(test=False):

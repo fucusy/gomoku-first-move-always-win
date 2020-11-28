@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Gomoku</title>
@@ -17,13 +16,23 @@
         <button onclick="rollback();" type="button">悔棋 (BACK)</button>
         <button onclick="start();" type="button">重新开始 (RESTART)</button>
     </div>
+    <div>
+        <a href="?person2person=true">玩家对战 (Play with Player)</a>
+        <br/>
+        <a href="?">人机对战 (Play with AI)</a>
+    </div>
 </div>
 </body>
 <script>
     var steps_string = "h8";
+    var person2person = false;
     var init_steps = findGetParameter("init_steps");
+    var person2personGet = findGetParameter("person2person");
     if(init_steps != null){
         steps_string = init_steps;
+    }
+    if(person2personGet != null){
+        person2person = true;
     }
 
     var init_steps = steps_string.split("_");
@@ -45,7 +54,6 @@
     }
     $("#cubes").html(content);
 
-    //listen();
     start();
     function findGetParameter(parameterName) {
         var result = null,
@@ -102,8 +110,10 @@
         init(init_steps);
         console.log("history stack length " + historyStack.length)
         if(historyStack.length % 2 == 0){
-            console.log("request for the beginning board")
-            submit();
+            console.log("request for the beginning board");
+            if(!person2person) {
+                submit();
+            }
         }
     }
 
@@ -172,9 +182,8 @@
         }
         return null;
     }
-
     function onClickCube(obj) {
-        if (thinking) {
+        if (!person2person && thinking) {
             alert("正在计算中...请稍后");
             return;
         }
@@ -185,8 +194,14 @@
         var x = parseInt(id.split("-")[0]);
         var y = parseInt(id.split("-")[1]);
         if ($("#" + id).attr("tag") == ".") {
-            setColor(x, y, getColorChar(getOtherColor(aiColor)));
-            submit();
+            var color = "WHITE";
+            if(historyStack.length % 2 == 0){
+                color = "BLACK";
+            }
+            setColor(x, y, getColorChar(color));
+            if(!person2person){
+                submit();
+            }
         }
     }
 
@@ -290,38 +305,6 @@
             alert("白棋胜利");
             thinking = false;
         }
-    }
-
-    function listen() {
-        setInterval(function () {
-            if (!thinking) {
-                $("#progress").html("空闲");
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "../api/gomoku/getProgress",
-                data: { "gameId": gameId },
-                datatype: "json",
-                async: false,
-                success: function (data) {
-                    if (data == null) {
-                        return;
-                    }
-                    if (data == true){
-                        progress = "计算中...";
-                    }
-                    if (data == false) {
-                        progress = "等待中...";
-                    }
-                    $("#progress").html(progress);
-                    console.info(JSON.stringify(data));
-                },
-                error: function () {
-                }
-            });
-        }, 300);
     }
 
     function guid() {
