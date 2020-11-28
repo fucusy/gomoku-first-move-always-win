@@ -27,6 +27,9 @@ Language
 Package
 - Python Package tornado 6.1
 
+# AI limitation
+The AI might not work if white move far away 3 steps from any existing move
+
 # Development Guide to solve an board
 1. encode your board by string,
 for example: for ![](./opennings/pu_yue.png), you need to encode it to h8_i9, 

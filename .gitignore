@@ -56,3 +56,4 @@ gomoku/result.txt
 gomoku/script/__pycache__/
 *.log
 solution_result.txt
+gomoku/__pycache__
