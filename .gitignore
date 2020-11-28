@@ -1,0 +1,58 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+.vs/*
+x64/*
+gomoku/x64/*
+.DS_Store
+.idea/*
+cmake-build-debug/
+CMakeFiles/
+*.pbcache
+gomoku/cli
+gomoku/unittest
+gomoku/example.txt
+gomoku/.idea/
+gomoku/web_search.cgi
+gomoku/divide
+gomoku/black_steps.txt
+gomoku/noninteractive
+gomoku/merge_run.py.log
+.idea
+gomoku/noninteractive.log
+.vscode
+gomoku/script/web_search
+gomoku/result.txt
+gomoku/script/__pycache__/
+*.log
+solution_result.txt
