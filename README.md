@@ -5,7 +5,9 @@ Win rule: five or more stones in a line win
 
 # Try it 
 video demo: https://www.bilibili.com/video/BV1Sf4y1i7df
+
 try it online: http://www.bytedance.ai/gomoku.html
+
 run it from codebase: 
 ```bash
 bash ./compile_for_web.sh
@@ -25,10 +27,8 @@ Language
 Package
 - Python Package tornado 6.1
 
-# Solved opening
-
-# Development Guide to solve an opening
-1.encode your board by string,
+# Development Guide to solve an board
+1. encode your board by string,
 for example: for ![](./opennings/pu_yue.png), you need to encode it to h8_i9, 
 this is the board to solve,
 , and last black move is i10, this is guided move
