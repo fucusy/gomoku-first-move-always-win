@@ -64,6 +64,7 @@ def find_step_str2action_from_directory_io():
 if __name__ == '__main__':
     step2action = find_step_str2action_from_directory_io()
     print("cache step2action size ", len(step2action))
+    # /h8_h7_g7_g6_f6_e5_i8_g8_i9_j10_h9_i6_f9_g9_g10/
     # add them to board2action
     with open("board2action_from_dir.txt", 'w') as f:
         for steps, action in step2action.items():
