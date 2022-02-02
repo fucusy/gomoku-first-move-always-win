@@ -1,10 +1,10 @@
 import os
 import pprint
 import sys
-import random
 
 global is_solved_cache
 is_solved_cache = {}
+
 
 def is_solved(board_str, divided_folder):
     """
@@ -559,43 +559,7 @@ def get_all_board2action():
     return board2action
 
 
-"""
-ZOBRIST HASH
-
-Hashes from all possible board states (3^225) into uint_64 (2^64).
-
-The algorithm is best described here - https://chessprogramming.wikispaces.com/Zobrist+Hashing
-"""
-
-class ZobristHash():
-    def __init__(self):
-        self.seed = 1000
-        # board_size * board_size * 4
-        self.random_res = []
-        random.seed(self.seed)
-        for i in range(15):
-            self.random_res.append([])
-            for j in range(15):
-                self.random_res[-1].append([])
-                for z in range(4):
-                    self.random_res[-1][-1].append(random.randint(0, 2**64 - 1))
-
-    def hash(self, board_str):
-        b = bit_board.init_from_board_str(board_str=board_str)
-        hash_res = 0
-        for i in range(15):
-            for j in range(15):
-                for z in range(3):
-                    hash_res ^= self.random_res[i][j][b.get_move(i, j)]
-        return hash_res
-
-global z
-z = ZobristHash()
-def board_str_hash(board_str):
-    return board_str
-
-
-def get_all_step_str2action(test=False):
+def get_all_step_str2action():
     solution_filenames = []
     top_dir_name = "../divided/"
     for sub_dir in os.listdir(top_dir_name):
@@ -607,28 +571,17 @@ def get_all_step_str2action(test=False):
                 full_filename = "%s%s" % (full_dirname, filename)
                 solution_filenames.append(full_filename)
 
-    # hash_res -> set(board_str_list)
-    hash_res2set = {}
-
     # hash_res -> action
-    hash_rec2action = {}
+    board_str2action = {}
     # prepared by script prepare_board2action_from_dir.py
     solution_filenames.append("./board2action_from_dir.txt")
     for i, filename in enumerate(solution_filenames):
         for line in open(filename, 'r'):
             board_str, action = line.strip("\n").split(":")
-            hash_res = board_str_hash(board_str)
-            hash_rec2action[hash_res] = action
-            if test:
-                if hash_res not in hash_res2set:
-                    hash_res2set[hash_res] = set()
-                hash_res2set[hash_res].add(board_str)
-                if len(hash_res2set[hash_res]) > 1:
-                    raise Exception("Found conflict result of key:%s, Existing board str are %s" %\
-                                    (hash_res, " and ".join(hash_res2set[hash_res])))
+            board_str2action[board_str] = action
         progress = i / len(solution_filenames)
         print("processing files %0.2f %dth/%d" % (progress, i, len(solution_filenames)))
-    return hash_rec2action
+    return board_str2action
 
 
 if __name__ == '__main__':
