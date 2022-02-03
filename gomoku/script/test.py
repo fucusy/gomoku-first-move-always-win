@@ -3,6 +3,8 @@ from divided_solution_manager import get_all_step_str2action
 
 
 if __name__ == '__main__':
+    get_all_step_str2action(test=True)
+
     board_str = "h8_g8_g7_f6_i7_h7"
     divided_folder = [
         "./divided/h8_g8_g7_f6_i7_h7_e9/h8_g8_g7_f6_i7_h7_e9_c7.txt",
