@@ -595,6 +595,24 @@ def board_str_hash(board_str):
     return z.hash(board_str)
 
 
+def find_next_steps_from_board_str_hash2action(step_str, board_str_hash2action):
+    """
+
+    :param step_str: h8_i8
+    :param board_str_hash2action: result from get_all_step_str2action
+    :return:
+    """
+    new_format_steps, trans = apply_all_transformation_for_steps_str(step_str)
+    possible_moves = []
+    for steps, tran in zip(new_format_steps, trans):
+        norm_steps = board_str_hash(steps2board_str(steps))
+        if norm_steps in board_str_hash2action:
+            before_trans = board_str_hash2action[norm_steps]
+            next_move = apply_transformation(before_trans, tran, reverse=True)
+            possible_moves.append(next_move)
+    return possible_moves
+
+
 def get_all_step_str2action(test=False):
     solution_filenames = []
     top_dir_name = "../divided/"
@@ -614,6 +632,8 @@ def get_all_step_str2action(test=False):
     hash_rec2action = {}
     # prepared by script prepare_board2action_from_dir.py
     solution_filenames.append("./board2action_from_dir.txt")
+    solution_filenames.append("./web_search_cache_file.txt")
+
     for i, filename in enumerate(solution_filenames):
         for line in open(filename, 'r'):
             board_str, action = line.strip("\n").split(":")
@@ -628,6 +648,24 @@ def get_all_step_str2action(test=False):
                                     (hash_res, " and ".join(hash_res2set[hash_res])))
         progress = i / len(solution_filenames)
         print("processing files %0.2f %dth/%d" % (progress, i, len(solution_filenames)))
+
+    # the manually added move has the higher priority
+    for line in open("./manually_added_step_str2move.txt", 'r'):
+        step_str, action = line.strip("\n").split(":")
+        b = bit_board()
+        b.steps(step_str)
+        board_str = str(b)
+        hash_res = board_str_hash(board_str)
+        hash_rec2action[hash_res] = action
+        if test:
+            if hash_res not in hash_res2set:
+                hash_res2set[hash_res] = set()
+            hash_res2set[hash_res].add(board_str)
+            if len(hash_res2set[hash_res]) > 1:
+                raise Exception("Found conflict result of key:%s, Existing board str are %s" %\
+                                (hash_res, " and ".join(hash_res2set[hash_res])))
+
+
     return hash_rec2action
 
 
