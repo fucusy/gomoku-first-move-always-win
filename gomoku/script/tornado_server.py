@@ -70,9 +70,7 @@ class MainHandler(tornado.web.RequestHandler):
         self.set_header('Content-type', 'application/json')
         self.set_header('Access-Control-Allow-Origin',  '*')
         steps_url = self.get_argument("stepsString").strip("_")
-        possible_moves = find_simple_steps(steps_url)
-        if len(possible_moves) == 0:
-            possible_moves = find_next_steps_from_board_str_hash2action(steps_url, board_str_hash2action)
+        possible_moves = find_next_steps_from_board_str_hash2action(steps_url, board_str_hash2action)
 
         if len(possible_moves) > 0:
             next_move = possible_moves[0]
