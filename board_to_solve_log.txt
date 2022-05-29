@@ -5,12 +5,12 @@ h8_h2,done
 h8_h1,done
 h8_g5,old_mac
 h8_g4
-h8_g3
+h8_g3,old_mac
 h8_g2,2_old_mac
 h8_g1,done
 h8_f5
 h8_f4
-h8_f3
+h8_f3,old_mac
 h8_f2,2_old_mac
 h8_f1,done
 h8_f5
