@@ -630,8 +630,6 @@ def get_all_step_str2action(test=False):
 
     # hash_res -> action
     hash_rec2action = {}
-    # prepared by script prepare_board2action_from_dir.py
-    solution_filenames.append("./board2action_from_dir.txt")
     solution_filenames.append("./web_search_cache_file.txt")
 
     for i, filename in enumerate(solution_filenames):
@@ -649,24 +647,27 @@ def get_all_step_str2action(test=False):
         progress = i / len(solution_filenames)
         print("processing files %0.2f %dth/%d" % (progress, i, len(solution_filenames)))
 
+    # prepared by script prepare_board2action_from_dir.py
     # the manually added move has the higher priority
-    for line in open("./manually_added_step_str2move.txt", 'r'):
-        step_str, action = line.strip("\n").split(":")
-        b = bit_board()
-        b.steps(step_str)
-        board_str = str(b)
-        hash_res = board_str_hash(board_str)
-        hash_rec2action[hash_res] = action
-        if test:
-            if hash_res not in hash_res2set:
-                hash_res2set[hash_res] = set()
-            hash_res2set[hash_res].add(board_str)
-            if len(hash_res2set[hash_res]) > 1:
-                raise Exception("Found conflict result of key:%s, Existing board str are %s" %\
-                                (hash_res, " and ".join(hash_res2set[hash_res])))
+    readable_solution_files = ["./board2action_from_dir.txt", "./manually_added_step_str2move.txt"]
 
+    for filename in readable_solution_files:
+        for line in open(filename, 'r'):
+            step_str, action = line.strip("\n").split(":")
+            b = bit_board()
+            b.steps(step_str)
+            board_str = str(b)
+            hash_res = board_str_hash(board_str)
+            hash_rec2action[hash_res] = action
+            if test:
+                if hash_res not in hash_res2set:
+                    hash_res2set[hash_res] = set()
+                hash_res2set[hash_res].add(board_str)
+                if len(hash_res2set[hash_res]) > 1:
+                    raise Exception("Found conflict result of key:%s, Existing board str are %s" %\
+                                    (hash_res, " and ".join(hash_res2set[hash_res])))
 
-    return hash_rec2action
+        return hash_rec2action
 
 
 if __name__ == '__main__':
