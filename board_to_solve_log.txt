@@ -1,6 +1,6 @@
 h8_h5,done
 h8_h4,done
-h8_h3,old_mac
+h8_h3,done
 h8_h2,old_mac
 h8_h1,done
 h8_g5
