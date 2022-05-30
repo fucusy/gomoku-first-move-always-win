@@ -6,8 +6,7 @@ h8_h1,done
 h8_g5,old_mac
 h8_g4,new_mac
     h8_g4_i9_e4,done
-    h8_g4_i9_e6,new_mac
-        h8_g4_i9_e6_j8_f5
+    h8_g4_i9_e6,done
     h8_g4_i9_f5,new_mac
 h8_g3,done
 h8_g2,done
