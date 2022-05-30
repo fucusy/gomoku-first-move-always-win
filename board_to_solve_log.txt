@@ -25,6 +25,6 @@ h8_d1,done
 h8_c3
 h8_c2,new_mac
 h8_c1,done
-h8_b2,new_mac
+h8_b2,done
 h8_b1,done
 h8_a1,done
