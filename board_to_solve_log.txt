@@ -10,6 +10,9 @@ h8_g2,done
 h8_g1,done
 h8_f5,new_mac
 h8_f4,2_old_mac
+	h8_f4_i9_g4,2_old_mac
+	h8_f4_i9_e4,2_old_mac
+	h8_f4_i9_d4,2_old_mac
 h8_f3,done
 h8_f2,done
 h8_f1,done
