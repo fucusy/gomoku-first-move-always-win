@@ -5,7 +5,7 @@ h8_h2,done
 h8_h1,done
 h8_g5,old_mac
 h8_g4,new_mac
-h8_g3,old_mac
+h8_g3,done
 h8_g2,2_old_mac
 h8_g1,done
 h8_f5,new_mac
