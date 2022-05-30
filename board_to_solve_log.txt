@@ -4,7 +4,7 @@ h8_h3,done
 h8_h2,done
 h8_h1,done
 h8_g5,old_mac
-    h8_g5_i9_e7,old_mac
+    h8_g5_i9_e7,done
     h8_g5_i9_f6
     h8_g5_i9_f5
     h8_g5_i9_h9
