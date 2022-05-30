@@ -6,24 +6,26 @@ h8_h1,done
 h8_g5,old_mac
 h8_g4,new_mac
 h8_g3,done
-h8_g2,2_old_mac
+h8_g2,done
 h8_g1,done
 h8_f5,new_mac
-h8_f4,new_mac
+h8_f4,2_old_mac
 h8_f3,old_mac
-h8_f2,2_old_mac
+    h8_f3_i9_e3,old_mac
+        h8_f3_i9_e3_j8_d3
+h8_f2,done
 h8_f1,done
 h8_f5
 h8_e4
 h8_e3
-h8_e2,2_old_mac
+h8_e2,done
 h8_e1,done
 h8_d4
 h8_d3
-h8_d2,new_mac
+h8_d2,done
 h8_d1,done
 h8_c3
-h8_c2,new_mac
+h8_c2,done
 h8_c1,done
 h8_b2,done
 h8_b1,done
