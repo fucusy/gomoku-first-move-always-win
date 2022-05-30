@@ -14,7 +14,7 @@ h8_g1,done
 h8_f5,new_mac
 h8_f4,2_old_mac
 	h8_f4_i9_g4,done
-	h8_f4_i9_e4,2_old_mac
+	h8_f4_i9_e4,done
 		h8_f4_i9_e4_j8_g4,copy
 		h8_f4_i9_e4_j8_d4,2_old_mac
 	h8_f4_i9_d4,2_old_mac
