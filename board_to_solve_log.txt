@@ -23,7 +23,7 @@ h8_d4
 h8_d3
 h8_d2,done
 h8_d1,done
-h8_c3
+h8_c3,done
 h8_c2,done
 h8_c1,done
 h8_b2,done
