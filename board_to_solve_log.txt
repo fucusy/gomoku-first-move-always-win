@@ -15,11 +15,7 @@ h8_f2,done
 h8_f1,done
 h8_e5
 h8_e4
-h8_e3,2old_mac
-	h8_e3_i9_e5,2old_mac
-	h8_e3_i9_e4,2old_mac
-	h8_e3_i9_d3,2old_mac
-	h8_e3_i9_c3,2old_mac
+h8_e3,done
 h8_e2,done
 h8_e1,done
 h8_d4
