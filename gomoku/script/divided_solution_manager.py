@@ -634,7 +634,11 @@ def get_all_step_str2action(test=False):
 
     for i, filename in enumerate(solution_filenames):
         for line in open(filename, 'r'):
-            board_str, action = line.strip("\n").split(":")
+            line_res = line.strip("\n").strip("")
+            if line_res == "":
+                # empty file means this board is duplicated with another solve board
+                continue
+            board_str, action = line_res.split(":")
             hash_res = board_str_hash(board_str)
             hash_rec2action[hash_res] = action
             if test:
