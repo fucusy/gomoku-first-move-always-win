@@ -14,17 +14,11 @@ h8_f3,done
 h8_f2,done
 h8_f1,done
 h8_e5,done,??? check if some solution depedendes on it wrongly
-h8_e5,new_mac???
 h8_e4,done
 h8_e3,done
 h8_e2,done
 h8_e1,done
-    h8_d4,new_mac
-        h8_d4_i9_d6,new_mac
-            h8_d4_i9_d6_j8_d5,new_mac
-        h8_d4_i9_d5,old_mac
-            h8_d4_i9_d5_j8_d6
-            h8_d4_i9_d5_j8_d3,done
+h8_d4,done
 h8_d3,done
 h8_d2,done
 h8_d1,done
