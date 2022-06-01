@@ -3,8 +3,8 @@
 ./problem_manager.sh h8_h3
 ./problem_manager.sh h8_h2
 ./problem_manager.sh h8_h1
-./problem_manager.sh h8_g4
 ./problem_manager.sh h8_g5
+./problem_manager.sh h8_g4
 ./problem_manager.sh h8_g3
 ./problem_manager.sh h8_g2
 ./problem_manager.sh h8_g1
