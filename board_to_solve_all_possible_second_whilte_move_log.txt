@@ -1,5 +1,5 @@
 h8_h7,done
-h8_h6
+h8_h6,done
 h8_h5
 h8_h4
 h8_h3
