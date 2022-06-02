@@ -16,19 +16,6 @@ fi
 cd gomoku
 rm divide
 
-
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  echo "I am linuX"
-  clang++ -std=c++17 -stdlib=libc++ -Wall -pedantic *.cpp -o divide -DCLI -DTEST -DDIVIDE
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  echo "I am mac"
-  g++  *.cpp -o divide -std=c++17 -DDIVIDE -DCLI -DTEST -I/Users/chenqiang/Documents/github/rocksdb/include/  -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd /usr/local/Cellar/jemalloc/5.2.1_1/lib/libjemalloc_pic.a  /Users/chenqiang/Documents/github/rocksdb/librocksdb.a
-else
-  echo "this platform is not supported"
-fi
-
-
-./divide ../$filename
 echo $next_step >> ./black_steps.txt
 python3 ./script/divide.py ../$filename ./black_steps.txt
 
