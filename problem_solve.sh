@@ -22,7 +22,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   clang++ -std=c++17 -stdlib=libc++ -Wall -pedantic *.cpp -o noninteractive -DCLI -DTEST -DNOINTERACTIVE -DLOADCACHE
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   echo "I am mac"
-  g++  *.cpp -o noninteractive -std=c++17 -DNOINTERACTIVE $flag -DCLI -DTEST `pkg-config --cflags --libs protobuf`
+  g++  *.cpp -o noninteractive -std=c++17 -DNOINTERACTIVE $flag -DCLI -DTEST `pkg-config --cflags --libs protobuf` -I/Users/chenqiang/Documents/github/rocksdb/include/  -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd /usr/local/Cellar/jemalloc/5.2.1_1/lib/libjemalloc_pic.a  /Users/chenqiang/Documents/github/rocksdb/librocksdb.a
 else
   echo "this platform is not supported"
 fi

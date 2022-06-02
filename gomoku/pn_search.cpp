@@ -161,8 +161,10 @@ coords pn_search::find_from_solved_solution(bit_board b){
 
     for(int i = 0; i < all_board.size(); i++){
         string board_str = all_board[i].to_string();
-        if(solved_boardstr2action.find(board_str) != solved_boardstr2action.end()){
-            string position_str = solved_boardstr2action[board_str];
+        string position_str = "XX";
+        rocksdb::Status status = db->Get(rocksdb::ReadOptions(), board_str, &position_str);
+        if(!status.IsNotFound()){
+            //cout << "board_str:" << board_str << ", move" << position_str << endl;
             coords tmp_position;
             coords::try_parse(position_str, tmp_position);
             position = coords::apply_trans(tmp_position, all_trans[i][0], all_trans[i][1], all_trans[i][2], true);

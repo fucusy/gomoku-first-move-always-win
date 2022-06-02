@@ -18,6 +18,10 @@
 #include <fstream>
 #include <set>
 
+#include "rocksdb/db.h"
+#include "rocksdb/slice.h"
+#include "rocksdb/options.h"
+
 using namespace std;
 
 /* PROOF-NUMBER SEARCH
@@ -41,43 +45,10 @@ using namespace std;
 class pn_search : public abstract_engine {
 public:
 	pn_search() : move_number_(0) {
-		player_ = current_player_ = WHITE; 
-
-		#if defined(LOADCACHE)
-		// init the solved_boardstr2action
-		namespace fs = std::filesystem;
-		string path = "../divided/";
-		for (const auto & entry : fs::directory_iterator(path)){
-			if(!fs::is_directory(entry)){
-				continue;
-			}
-			for (const auto & filename : fs::directory_iterator(entry.path())){
-				if(string(filename.path()).find(".board2action.txt") != string::npos){
-					string line;
-					ifstream myfile(string(filename.path()));
-					if (myfile.is_open()) {
-						while (getline(myfile, line)) {
-							vector<string> key_value;
-							tokenize(line, ':', key_value);
-							solved_boardstr2action.insert(pair(key_value[0], key_value[1]));
-						}
-						myfile.close();
-					}
-				}
-			}
-    	}
-
-        string line;
-    	ifstream myfile("./script/board2action_from_dir.txt");
-        if (myfile.is_open()) {
-            while (getline(myfile, line)) {
-                vector<string> key_value;
-                tokenize(line, ':', key_value);
-                solved_boardstr2action.insert(pair(key_value[0], key_value[1]));
-            }
-            myfile.close();
-        }
-		#endif
+		player_ = current_player_ = WHITE;
+		rocksdb::Options options;
+        options.create_if_missing = true;
+        rocksdb::Status status = rocksdb::DB::OpenForReadOnly(options, "/Users/chenqiang/Documents/github/gomoku-first-move-always-win/gomoku/script/no_restrituion_gomoku.db", &db);
 	}
     coords find_from_solved_solution(bit_board b);
 	// informs the engine that a new move was placed on board
@@ -89,9 +60,9 @@ public:
 
 
     static void save_tree(std::string output_filename, bit_board board_track, const pn_node *actual_root);
-	map<string, string> solved_boardstr2action; // key is encoded by bit_board.to_string(), value is coords.to_string() 
 
-	set<string> hitted_board2action; // the hitted board2action from solved_boardstr2action, bit_board.to_string():coords.to_string() 
+	set<string> hitted_board2action; // the hitted board2action from solved_boardstr2action, bit_board.to_string():coords.to_string()
+	rocksdb::DB* db; // key is encoded by bit_board.to_string(), value is coords.to_string()
 
 private:
 	// starts developing the tree

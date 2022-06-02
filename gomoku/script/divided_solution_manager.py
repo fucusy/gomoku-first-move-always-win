@@ -543,6 +543,7 @@ def get_all_board2action():
         if not os.path.isdir(full_dirname):
             continue
         for filename in os.listdir(full_dirname):
+            i += 1
             if filename.endswith("board2action.txt"):
                 full_filename = "%s%s" % (full_dirname, filename)
                 solution_filenames.append(full_filename)
@@ -592,7 +593,7 @@ class ZobristHash():
 global z
 z = ZobristHash()
 def board_str_hash(board_str):
-    return z.hash(board_str)
+    return board_str # z.hash(board_str)
 
 
 def find_next_steps_from_board_str_hash2action(step_str, board_str_hash2action):

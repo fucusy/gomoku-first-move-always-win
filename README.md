@@ -27,6 +27,33 @@ Language
 
 Package
 - Python Package tornado 6.1
+- https://github.com/NightTsarina/python-rocksdb 0.8
+
+macOS: brew install alexreg/dev/rocksdb@6 for python lib
+
+"""
+rocksdb@6 is keg-only, which means it was not symlinked into /usr/local,
+because this is an alternate version of another formula.
+
+If you need to have rocksdb@6 first in your PATH, run:
+    echo 'export PATH="/usr/local/opt/rocksdb@6/bin:$PATH"' >> ~/.zshrc
+
+For compilers to find rocksdb@6 you may need to set:
+    export LDFLAGS="-L/usr/local/opt/rocksdb@6/lib"
+    export CPPFLAGS="-I/usr/local/opt/rocksdb@6/include"
+For pkg-config to find rocksdb@6 you may need to set:
+    export PKG_CONFIG_PATH="/usr/local/opt/rocksdb@6/lib/pkgconfig"
+"""
+
+C++
+- RocksDB 6
+
+    git@github.com:facebook/rocksdb.git da11a5903 v6.xx
+
+    g++ rocksdb_test.cpp -o test -I/Users/chenqiang/Documents/gthub/rocksdb/include/ -std=c++17 -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd /usr/local/Cellar/jemalloc/5.2.1_1/lib/libjemalloc_pic.a  /Users/chenqiang/Documents/github/rocksdb/librocksdb.a
+
+
+
 
 # AI limitation
 The AI might not work if white move far away 3 steps from any existing move

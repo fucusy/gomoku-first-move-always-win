@@ -3,6 +3,9 @@
 
 #include "coords.h"
 #include "bit_board.h"
+#include "rocksdb/db.h"
+#include "rocksdb/slice.h"
+#include "rocksdb/options.h"
 #include <map>
 
 /* ABSTRACT ENGINE
@@ -25,7 +28,8 @@ public:
 	static void change_player(figure& player) { player = (player == BLACK ? WHITE : BLACK); }
 
     std::string init_filename;
-	std::map<std::string, std::string> solved_boardstr2action; // key is encoded by bit_board.to_string(), value is coords.to_string() 
+	rocksdb::DB* db; // for query solved solution
+
 	virtual ~abstract_engine() {}
 
 protected:
