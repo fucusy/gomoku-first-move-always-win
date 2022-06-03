@@ -1,0 +1,36 @@
+h8_h5
+h8_h4
+h8_h3
+h8_h2
+h8_h1
+h8_g5
+h8_g4
+h8_g3
+h8_g2
+h8_g1
+h8_f5
+h8_f4
+h8_f3
+h8_f2
+h8_f1
+h8_e5
+h8_e4
+h8_e3
+h8_e2
+h8_e1
+h8_d4
+h8_d3
+h8_d2
+h8_d1
+h8_c3
+h8_c2
+h8_c1
+h8_b2
+h8_b1
+h8_a1
+
+h8_g7,choose h8_i7
+h8_g6,choose h8_i6
+h8_h7,done
+h8_h6,done
+h8_f6,choose h8_j6
