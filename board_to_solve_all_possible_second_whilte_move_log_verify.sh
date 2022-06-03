@@ -1,8 +1,3 @@
-./problem_manager.sh h8_i7
-./problem_manager.sh h8_i6
-./problem_manager.sh h8_h7
-./problem_manager.sh h8_h6
-./problem_manager.sh h8_j6
 ./problem_manager.sh h8_h5
 ./problem_manager.sh h8_h4
 ./problem_manager.sh h8_h3
@@ -19,18 +14,22 @@
 ./problem_manager.sh h8_f2
 ./problem_manager.sh h8_f1
 ./problem_manager.sh h8_e5
+./problem_manager.sh h8_e4
 ./problem_manager.sh h8_e3
 ./problem_manager.sh h8_e2
 ./problem_manager.sh h8_e1
 ./problem_manager.sh h8_d4
 ./problem_manager.sh h8_d3
 ./problem_manager.sh h8_d2
+./problem_manager.sh h8_d1
+./problem_manager.sh h8_c3
+./problem_manager.sh h8_c2
+./problem_manager.sh h8_c1
+./problem_manager.sh h8_b2
 ./problem_manager.sh h8_b1
 ./problem_manager.sh h8_a1
-
-#h8_d1
-#h8_c3
-#h8_c2
-#h8_c1
-#h8_b2
-#h8_e4
+./problem_manager.sh h8_i7
+./problem_manager.sh h8_i6
+./problem_manager.sh h8_h7
+./problem_manager.sh h8_h6
+./problem_manager.sh h8_f6

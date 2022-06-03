@@ -230,7 +230,9 @@ void pn_search::develop_node(pn_node &node) {
         if(!position.is_out_of_board()){
             string position_str = position.to_string();
             hitted_board2action.insert(board_str + ":" + position_str);
+#if defined(NOINTERACTIVE)
             cout << " the existing solution " << board_str << " " << position_str  << endl;
+#endif
             node.add_child(position, pn_type::_AND, 0, UINT32_MAX, UINT8_MAX);
                             return;
         }
