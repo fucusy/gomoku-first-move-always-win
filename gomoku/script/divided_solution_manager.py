@@ -596,6 +596,27 @@ def board_str_hash(board_str):
     return board_str # z.hash(board_str)
 
 
+def find_next_steps_from_board_str_db(step_str, db):
+    """
+
+    :param step_str: h8_i8
+    :param db: rocks db read only mode,
+    key is 1073741823,1073741823,1073741823,1073725439,1073741823,1073086463,1073586175,1073639423,1073737727,1073741823,1073741823,1073741823,1073741823,1073741823,1073741823
+    value is j1
+    :return:
+    """
+    new_format_steps, trans = apply_all_transformation_for_steps_str(step_str)
+    possible_moves = []
+    for steps, tran in zip(new_format_steps, trans):
+        board_str = steps2board_str(steps)
+        action = db.get(str.encode(board_str))
+        if action is not None:
+            before_trans = action.decode()
+            next_move = apply_transformation(before_trans, tran, reverse=True)
+            possible_moves.append(next_move)
+    return possible_moves
+
+
 def find_next_steps_from_board_str_hash2action(step_str, board_str_hash2action):
     """
 

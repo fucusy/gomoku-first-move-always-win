@@ -45,6 +45,8 @@ For pkg-config to find rocksdb@6 you may need to set:
     export PKG_CONFIG_PATH="/usr/local/opt/rocksdb@6/lib/pkgconfig"
 """
 
+Linux: 
+
 C++
 - RocksDB 6
 
@@ -92,6 +94,7 @@ listed board in "AND" node
 bash ./compile_for_web.sh
 cd gomoku/script
 python3 ./prepare_board2action_from_dir.py
+python3 ./write_board2action_into_db.py
 python3 ./tornado_server.py 80 debug
 ```
 open url: http://127.0.0.1/web/gomoku.html
