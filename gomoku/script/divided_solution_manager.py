@@ -543,6 +543,7 @@ def get_all_board2action():
         if not os.path.isdir(full_dirname):
             continue
         for filename in os.listdir(full_dirname):
+            i += 1
             if filename.endswith("board2action.txt"):
                 full_filename = "%s%s" % (full_dirname, filename)
                 solution_filenames.append(full_filename)
@@ -592,7 +593,28 @@ class ZobristHash():
 global z
 z = ZobristHash()
 def board_str_hash(board_str):
-    return z.hash(board_str)
+    return board_str # z.hash(board_str)
+
+
+def find_next_steps_from_board_str_db(step_str, db):
+    """
+
+    :param step_str: h8_i8
+    :param db: rocks db read only mode,
+    key is 1073741823,1073741823,1073741823,1073725439,1073741823,1073086463,1073586175,1073639423,1073737727,1073741823,1073741823,1073741823,1073741823,1073741823,1073741823
+    value is j1
+    :return:
+    """
+    new_format_steps, trans = apply_all_transformation_for_steps_str(step_str)
+    possible_moves = []
+    for steps, tran in zip(new_format_steps, trans):
+        board_str = steps2board_str(steps)
+        action = db.get(str.encode(board_str))
+        if action is not None:
+            before_trans = action.decode()
+            next_move = apply_transformation(before_trans, tran, reverse=True)
+            possible_moves.append(next_move)
+    return possible_moves
 
 
 def find_next_steps_from_board_str_hash2action(step_str, board_str_hash2action):
@@ -613,7 +635,7 @@ def find_next_steps_from_board_str_hash2action(step_str, board_str_hash2action):
     return possible_moves
 
 
-def get_all_step_str2action(test=False):
+def get_all_step_str2action_tuple():
     solution_filenames = []
     top_dir_name = "../divided/"
     for sub_dir in os.listdir(top_dir_name):
@@ -621,7 +643,7 @@ def get_all_step_str2action(test=False):
         if not os.path.isdir(full_dirname):
             continue
         for filename in os.listdir(full_dirname):
-            if filename.endswith("board2action.txt"):
+            if filename.endswith("board2action.txt") and not filename.startswith("."):
                 full_filename = "%s%s" % (full_dirname, filename)
                 solution_filenames.append(full_filename)
 
@@ -630,41 +652,41 @@ def get_all_step_str2action(test=False):
 
     # hash_res -> action
     hash_rec2action = {}
-    # prepared by script prepare_board2action_from_dir.py
-    solution_filenames.append("./board2action_from_dir.txt")
     solution_filenames.append("./web_search_cache_file.txt")
 
     for i, filename in enumerate(solution_filenames):
         for line in open(filename, 'r'):
-            board_str, action = line.strip("\n").split(":")
+            line_res = line.strip("\n").strip("")
+            if line_res == "":
+                # empty file means this board is duplicated with another solve board
+                continue
+            board_str, action = line_res.split(":")
             hash_res = board_str_hash(board_str)
-            hash_rec2action[hash_res] = action
-            if test:
-                if hash_res not in hash_res2set:
-                    hash_res2set[hash_res] = set()
-                hash_res2set[hash_res].add(board_str)
-                if len(hash_res2set[hash_res]) > 1:
-                    raise Exception("Found conflict result of key:%s, Existing board str are %s" %\
-                                    (hash_res, " and ".join(hash_res2set[hash_res])))
+            yield (hash_res, action)
         progress = i / len(solution_filenames)
         print("processing files %0.2f %dth/%d" % (progress, i, len(solution_filenames)))
 
+    # prepared by script prepare_board2action_from_dir.py
     # the manually added move has the higher priority
-    for line in open("./manually_added_step_str2move.txt", 'r'):
-        step_str, action = line.strip("\n").split(":")
-        b = bit_board()
-        b.steps(step_str)
-        board_str = str(b)
-        hash_res = board_str_hash(board_str)
-        hash_rec2action[hash_res] = action
-        if test:
-            if hash_res not in hash_res2set:
-                hash_res2set[hash_res] = set()
-            hash_res2set[hash_res].add(board_str)
-            if len(hash_res2set[hash_res]) > 1:
-                raise Exception("Found conflict result of key:%s, Existing board str are %s" %\
-                                (hash_res, " and ".join(hash_res2set[hash_res])))
+    readable_solution_files = ["./board2action_from_dir.txt", "./manually_added_step_str2move.txt"]
 
+    for filename in readable_solution_files:
+        for line in open(filename, 'r'):
+            step_str, action = line.strip("\n").split(":")
+            b = bit_board()
+            b.steps(step_str)
+            board_str = str(b)
+            hash_res = board_str_hash(board_str)
+            yield (hash_res, action)
+
+
+def get_all_step_str2action():
+    # hash_res == board_str == step_str in this context
+    # hash_res -> action
+    hash_rec2action = {}
+
+    for hash_res, action in get_all_step_str2action_tuple():
+        hash_rec2action[hash_res] = action
 
     return hash_rec2action
 

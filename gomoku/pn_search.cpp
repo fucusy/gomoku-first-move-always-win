@@ -154,21 +154,27 @@ pn_node &pn_search::select_most_proving() {
 }
 
 coords pn_search::find_from_solved_solution(bit_board b){
+
     coords position = coords::INCORRECT_POSITION;
     vector<bit_board> all_board;
     vector<vector<bool>> all_trans; // the element is 3 size bool vector,
     b.apply_all_transformation(all_board, all_trans);
 
+
+#if defined(FIND_FROM_DB)
     for(int i = 0; i < all_board.size(); i++){
         string board_str = all_board[i].to_string();
-        if(solved_boardstr2action.find(board_str) != solved_boardstr2action.end()){
-            string position_str = solved_boardstr2action[board_str];
+        string position_str = "XX";
+        rocksdb::Status status = db->Get(rocksdb::ReadOptions(), board_str, &position_str);
+        if(!status.IsNotFound()){
+            //cout << "board_str:" << board_str << ", move" << position_str << endl;
             coords tmp_position;
             coords::try_parse(position_str, tmp_position);
             position = coords::apply_trans(tmp_position, all_trans[i][0], all_trans[i][1], all_trans[i][2], true);
             return position;
         }
     }
+#endif
     return position;
 }
 
@@ -228,7 +234,9 @@ void pn_search::develop_node(pn_node &node) {
         if(!position.is_out_of_board()){
             string position_str = position.to_string();
             hitted_board2action.insert(board_str + ":" + position_str);
+#if defined(NOINTERACTIVE)
             cout << " the existing solution " << board_str << " " << position_str  << endl;
+#endif
             node.add_child(position, pn_type::_AND, 0, UINT32_MAX, UINT8_MAX);
                             return;
         }

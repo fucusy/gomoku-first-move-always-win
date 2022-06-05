@@ -5,8 +5,9 @@ import sys
 def possible_white(step_list):
     steps = set()
     dirs = []
-    for i in range(-2, 3):
-        for j in range(-2, 3):
+    # support white move at all position
+    for i in range(-7, 8):
+        for j in range(-7, 8):
             dirs.append([i, j])
     for s in step_list:
         x = ord(s[0]) - ord('a')

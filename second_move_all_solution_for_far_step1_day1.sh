@@ -1,0 +1,9 @@
+./problem_comb.sh h8_h5 i9
+./problem_comb.sh h8_h4 i9
+./problem_comb.sh h8_h3 i9
+./problem_comb.sh h8_h2 i9
+./problem_comb.sh h8_g5 i9
+./problem_comb.sh h8_g4 i9
+./problem_comb.sh h8_g3 i9
+./problem_comb.sh h8_g2 i9
+./problem_comb.sh h8_g1 i9

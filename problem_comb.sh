@@ -11,6 +11,9 @@ full_filename=./gomoku/divided/${filename:0:${#filename}-$sub_count}/$filename.t
 mkdir ./gomoku/divided/${filename:0:${#filename}-$sub_count}/
 touch $full_filename
 echo $filename | tr '_' '\n' > $full_filename
-./problem_divide.sh $full_filename ${next_step}
-./problem_solve.sh /${filename}_${next_step}/ $3 $4
+#make a correct filename location for given board
+bash -x ./problem_divide.sh $full_filename ${next_step}
+
+#solve all the white move location
+bash -x ./problem_solve.sh /${filename}_${next_step}/ $3 $4
 

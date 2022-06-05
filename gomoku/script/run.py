@@ -4,7 +4,7 @@ import multiprocessing
 from multiprocessing import Pool
 import os, time
 from divided_solution_manager import get_divided_tree
-from divided_solution_manager import is_solved_io
+from divided_solution_manager import is_solved
 
 def run_sub_problem(filename):
     print('Run task %s (%s)...' % (filename, os.getpid()))
@@ -19,15 +19,17 @@ def run_sub_problem(filename):
 if __name__ == '__main__':
     selected_black_move = sys.argv[1]
     dry_run = len(sys.argv) > 2
-    filenames = [f for f in get_divided_tree() if not f.endswith(".hitted_record.txt") and not f.endswith("board2action.txt")]
+    divided_tree = get_divided_tree()
+    filenames = [f for f in divided_tree if not f.endswith(".hitted_record.txt") and not f.endswith("board2action.txt")]
     selected_sub_problem = []
-    for name in filenames:
+
+    for name in sorted(filenames):
         solution_filename = "%s.board2action.txt" % name
         steps = name.split("/")[-1].strip(".txt")
         if name.find(selected_black_move) > 0:
             if os.path.exists(solution_filename):
                 print("skip solution existing %s" % name)
-            elif is_solved_io(steps):
+            elif is_solved(steps, divided_tree):
                 print("solution is solved in sub directory %s " % name)
             else:
                 selected_sub_problem.append(name)
@@ -36,8 +38,10 @@ if __name__ == '__main__':
     print(len(selected_sub_problem))
 
     if not dry_run:
-        p = Pool(multiprocessing.cpu_count())
+        pool_num = multiprocessing.cpu_count()
+        p = Pool(pool_num)
         for name in selected_sub_problem:
+            print(name)
             p.apply_async(run_sub_problem, args=(name,))
         print('Waiting for all subprocesses done...')
         p.close()
