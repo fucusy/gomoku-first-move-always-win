@@ -154,11 +154,14 @@ pn_node &pn_search::select_most_proving() {
 }
 
 coords pn_search::find_from_solved_solution(bit_board b){
+
     coords position = coords::INCORRECT_POSITION;
     vector<bit_board> all_board;
     vector<vector<bool>> all_trans; // the element is 3 size bool vector,
     b.apply_all_transformation(all_board, all_trans);
 
+
+#if defined(FIND_FROM_DB)
     for(int i = 0; i < all_board.size(); i++){
         string board_str = all_board[i].to_string();
         string position_str = "XX";
@@ -171,6 +174,7 @@ coords pn_search::find_from_solved_solution(bit_board b){
             return position;
         }
     }
+#endif
     return position;
 }
 

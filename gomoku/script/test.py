@@ -55,7 +55,7 @@ def total_size(o, handlers={}, verbose=False):
 
 
 if __name__ == '__main__':
-    res = get_all_step_str2action(test=True)
+    res = get_all_step_str2action()
     print("Hash bytes for %d keys : %d" % (len(res), total_size(res)))
 
     board_str = "h8_g8_g7_f6_i7_h7"

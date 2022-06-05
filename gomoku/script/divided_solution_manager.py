@@ -635,7 +635,7 @@ def find_next_steps_from_board_str_hash2action(step_str, board_str_hash2action):
     return possible_moves
 
 
-def get_all_step_str2action(test=False):
+def get_all_step_str2action_tuple():
     solution_filenames = []
     top_dir_name = "../divided/"
     for sub_dir in os.listdir(top_dir_name):
@@ -643,7 +643,7 @@ def get_all_step_str2action(test=False):
         if not os.path.isdir(full_dirname):
             continue
         for filename in os.listdir(full_dirname):
-            if filename.endswith("board2action.txt"):
+            if filename.endswith("board2action.txt") and not filename.startswith("."):
                 full_filename = "%s%s" % (full_dirname, filename)
                 solution_filenames.append(full_filename)
 
@@ -662,14 +662,7 @@ def get_all_step_str2action(test=False):
                 continue
             board_str, action = line_res.split(":")
             hash_res = board_str_hash(board_str)
-            hash_rec2action[hash_res] = action
-            if test:
-                if hash_res not in hash_res2set:
-                    hash_res2set[hash_res] = set()
-                hash_res2set[hash_res].add(board_str)
-                if len(hash_res2set[hash_res]) > 1:
-                    raise Exception("Found conflict result of key:%s, Existing board str are %s" %\
-                                    (hash_res, " and ".join(hash_res2set[hash_res])))
+            yield (hash_res, action)
         progress = i / len(solution_filenames)
         print("processing files %0.2f %dth/%d" % (progress, i, len(solution_filenames)))
 
@@ -684,16 +677,18 @@ def get_all_step_str2action(test=False):
             b.steps(step_str)
             board_str = str(b)
             hash_res = board_str_hash(board_str)
-            hash_rec2action[hash_res] = action
-            if test:
-                if hash_res not in hash_res2set:
-                    hash_res2set[hash_res] = set()
-                hash_res2set[hash_res].add(board_str)
-                if len(hash_res2set[hash_res]) > 1:
-                    raise Exception("Found conflict result of key:%s, Existing board str are %s" %\
-                                    (hash_res, " and ".join(hash_res2set[hash_res])))
+            yield (hash_res, action)
 
-        return hash_rec2action
+
+def get_all_step_str2action():
+    # hash_res == board_str == step_str in this context
+    # hash_res -> action
+    hash_rec2action = {}
+
+    for hash_res, action in get_all_step_str2action_tuple():
+        hash_rec2action[hash_res] = action
+
+    return hash_rec2action
 
 
 if __name__ == '__main__':

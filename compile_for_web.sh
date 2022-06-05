@@ -10,7 +10,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   clang++ -stdlib=libc++ -Wall -pedantic *.cpp -o ./script/web_search -std=c++17 -DWEB
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   echo "I am mac"
-  g++  *.cpp  -o ./script/web_search -std=c++17 -DWEB -I/usr/local/Cellar/rocksdb@6/6.29.4/include -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd /usr/local/Cellar/jemalloc/5.3.0/lib/libjemalloc_pic.a /usr/local/Cellar/rocksdb@6/6.29.4/lib/librocksdb.a
+  g++  *.cpp  -o ./script/web_search -std=c++17 -DWEB
 else
   echo "this platform is not supported"
 fi
