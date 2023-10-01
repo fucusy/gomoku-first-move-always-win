@@ -28,6 +28,8 @@ Language
 Package
 - Python Package tornado 6.1
 - https://github.com/NightTsarina/python-rocksdb 0.8, pip install rocksdb==0.8
+- gtimeout  `brew install coreutils` on macOS
+
 
 macOS: brew install alexreg/dev/rocksdb@6 for python lib
 
