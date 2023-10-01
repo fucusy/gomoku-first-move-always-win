@@ -22,7 +22,7 @@ System
 - Linux/macOS, Tested in ubuntu 18.04, macOS 10.15.4
 
 Language
-- Python 3.x, Tested in 3.9.0
+- Python 3.x, Tested in 3.9.0, `conda create --name env python=3.9`
 - C++ 17
 
 Package
