@@ -17,6 +17,17 @@ all_step_str2action = get_all_step_str2action()
 
 class MainHandler(tornado.web.RequestHandler):
 
+    def set_default_headers(self):
+        # Allow all origins to access this resource
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+
+    def options(self):
+        # no body
+        self.set_status(204)
+        self.finish()
+
     def get(self):
         self.set_header('Content-type', 'application/json')
         self.set_header('Access-Control-Allow-Origin',  '*')
