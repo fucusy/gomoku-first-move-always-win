@@ -19,7 +19,7 @@ open url: http://127.0.0.1/web/gomoku.html
 
 # Requirement
 System
-- Linux/macOS, Tested in ubuntu 18.04, macOS 10.15.4
+- Linux/macOS, Tested in ubuntu 18.04, macOS 13.6
 
 Language
 - Python 3.x, Tested in 3.9.0, `conda create --name gomoku python=3.9`
