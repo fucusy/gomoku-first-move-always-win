@@ -9,6 +9,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export LD_LIBRARY_PATH=/usr/local/clang_9.0.0/lib:$LD_LIBRARY_PATH
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   echo "I am mac"
+  export LIBRARY_PATH="$LIBRARY_PATH:/opt/homebrew/lib/"
 else
   echo "this platform is not supported"
 fi
