@@ -32,6 +32,9 @@ Package
 
 
 macOS: brew install alexreg/dev/rocksdb@6 for python lib
+- `brew install pkg-config`
+- `brew install alexreg/dev/rocksdb@6`
+- `brew install snappy`
 
 """
 rocksdb@6 is keg-only, which means it was not symlinked into /usr/local,
