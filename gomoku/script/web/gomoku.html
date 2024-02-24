@@ -2,17 +2,6 @@
 <html lang="en">
 
 <head>
-    <script>
-    // force to use unsecure http because the web has to access unsecure http API
-    document.addEventListener('DOMContentLoaded', function() {
-        if (location.protocol == 'https:') {
-            let httpUrl = `http:${location.href.substring(location.protocol.length)}`;
-            console.log(httpUrl);
-            document.body.innerHTML = `The website does not support https, please visit ${httpUrl}`;
-            // no link here because chrome will force it as https://
-        }
-    });
-    </script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9D2R56XSHB"></script>
     <script>
