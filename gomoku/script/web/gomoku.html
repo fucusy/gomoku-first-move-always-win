@@ -1,13 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <script>
+    // force to use unsecure http because the web has to access unsecure http API
+    document.addEventListener('DOMContentLoaded', function() {
+        if (location.protocol == 'https:') {
+            let httpUrl = `http:${location.href.substring(location.protocol.length)}`;
+            console.log(httpUrl);
+            document.body.innerHTML = `The website does not support https, please visit ${httpUrl}`;
+            // no link here because chrome will force it as https://
+        }
+    });
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9D2R56XSHB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-9D2R56XSHB');
+    </script>
     <meta charset="UTF-8">
-    <title>Gomoku</title>
+    <title>ByteDance AI Gomoku</title>
     <script src="js/jquery.js"></script>
 </head>
 
 <body>
-<div>
     <img id="hint" src="pic/line.png" hidden="hidden">
     <div id="cubes">
     </div>
@@ -16,11 +36,43 @@
         <button onclick="rollback();" type="button">悔棋 (BACK)</button>
         <button onclick="start();" type="button">重新开始 (RESTART)</button>
     </div>
+    <hr/>
+
     <div>
         <a href="?person2person=true">玩家对战 (Play with Player)</a>
         <br/>
         <a href="?">人机对战 (Play with AI)</a>
     </div>
+
+    <div>
+        <h2>ByteDance AI Gomoku - The Ultimate Five-in-a-Row AI</h2>
+        <span>
+        Welcome to ByteDance AI Gomoku (http://www.bytedance.ai/gomoku.html), Play against our advanced AI, which has been trained using the latest machine learning techniques to provide an immersive and challenging experience for players of all skill levels. <br/><br/>
+
+        Join us and test your strategic prowess in this ancient board game, also known as Five-in-a-Row, where the objective is to form an unbroken line of five stones of your color, horizontally, vertically, or diagonally. <br/><br/>
+
+        Are you ready for the ByteDance AI Gomoku challenge?
+        </span>
+        <br/>
+        <br/>
+    </div>
+    <hr/>
+    <div>
+        This project is built by <b><a target="_blank" href="http://qiangchen.org">qiangchen.org</a></b> and open sourced in <a target="_blank" href="https://github.com/fucusy/gomoku-first-move-always-win">Github fucusy/gomoku-first-move-always-win</a>
+    </div>
+    <hr/>
+    Notes
+    <div>
+        <br/>
+        <b><li id="collected-money">The AI could be out of service, contact fucus.me@gmail.com if you want to support it.</li></b>
+        <br/>
+    </div>
+    <div>
+        <li>2023-10-01: The AI is back using personal laptop as the server plus free port forwarding service from https://portmap.io/. The service could be shutdown anytime, contact fucus.me@gmail.com if you want to support it.</li>
+        <li>2023-09-21: The AI is out of service due to end of cloud server, contact fucus.me@gmail.com if you want to support it.</li>
+        <li>2022-06-05: Support white put move far away from existing move on first and second step.</li>
+    </div>
+
 </div>
 </body>
 <script>
@@ -236,7 +288,7 @@
         thinking = true;
         $.ajax({
             type: "GET",
-            url: "/",
+            url: "/next_step",
             data: params,
             datatype: "json",
             success: function (data) {
@@ -313,6 +365,10 @@
             return v.toString(16);
         });
     }
+
+    // Update the statement of service end
+    // Get the current date
+
 
 </script>
 </html>

@@ -51,21 +51,15 @@ class MainHandler(tornado.web.RequestHandler):
         self.write(str.encode(response))
 
 
-def make_app(debug):
-    handlers = [(r"/", MainHandler) ]
-    if debug:
-        handlers.append((r'/(.*)', web.StaticFileHandler, {'path': "./"}))
+def make_app():
+    handlers = [(r"/next_step", MainHandler), (r"/", MainHandler) ]
+    handlers.append((r'/(.*)', web.StaticFileHandler, {'path': "./web/"}))
     return tornado.web.Application(handlers)
 
 
 if __name__ == "__main__":
-    debug = False
     port = int(sys.argv[1])
-    if len(sys.argv) > 2:
-        print("DEBUG MODE, Server Web UI Here")
-        debug = True
-
-    app = make_app(debug)
+    app = make_app()
     app.listen(port)
     tornado.ioloop.IOLoop.current().start()
 
