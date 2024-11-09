@@ -595,6 +595,12 @@ z = ZobristHash()
 def board_str_hash(board_str):
     return board_str # z.hash(board_str)
 
+def key_exists(db, key):
+    try:
+        db.Get(key)
+        return True
+    except KeyError:
+        return False
 
 def find_next_steps_from_board_str_db(step_str, db):
     """
@@ -609,27 +615,27 @@ def find_next_steps_from_board_str_db(step_str, db):
     possible_moves = []
     for steps, tran in zip(new_format_steps, trans):
         board_str = steps2board_str(steps)
-        action = db.get(str.encode(board_str))
-        if action is not None:
+        if key_exists(db, str.encode(board_str)):
+            action = db.Get(str.encode(board_str))
             before_trans = action.decode()
             next_move = apply_transformation(before_trans, tran, reverse=True)
             possible_moves.append(next_move)
     return possible_moves
 
 
-def find_next_steps_from_board_str_hash2action(step_str, board_str_hash2action):
+def find_next_steps_from_db(step_str, db):
     """
 
     :param step_str: h8_i8
-    :param board_str_hash2action: result from get_all_step_str2action
+    :param : result from get_all_step_str2action
     :return:
     """
     new_format_steps, trans = apply_all_transformation_for_steps_str(step_str)
     possible_moves = []
     for steps, tran in zip(new_format_steps, trans):
-        norm_steps = board_str_hash(steps2board_str(steps))
-        if norm_steps in board_str_hash2action:
-            before_trans = board_str_hash2action[norm_steps]
+        norm_steps = normalize_steps_str(steps)
+        if key_exists(db, norm_steps.encode('utf-8')):
+            before_trans = db.Get(norm_steps.encode('utf-8')).decode()
             next_move = apply_transformation(before_trans, tran, reverse=True)
             possible_moves.append(next_move)
     return possible_moves

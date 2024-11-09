@@ -2,18 +2,18 @@ import os
 import platform
 import sys
 
+import leveldb
 import tornado.ioloop
 from tornado import options
 from tornado import web
 from tornado.log import app_log
 
-from divided_solution_manager import find_next_steps_from_board_str_hash2action, get_all_step_str2action
+from divided_solution_manager import find_next_steps_from_db
 
 options.options["log_file_prefix"] = "tornado_log"
 options.parse_command_line()
 
-all_step_str2action = get_all_step_str2action()
-
+db = leveldb.LevelDB('leveldb.db')
 
 class MainHandler(tornado.web.RequestHandler):
 
@@ -32,7 +32,7 @@ class MainHandler(tornado.web.RequestHandler):
         self.set_header('Content-type', 'application/json')
         self.set_header('Access-Control-Allow-Origin',  '*')
         steps_url = self.get_argument("stepsString").strip("_")
-        possible_moves = find_next_steps_from_board_str_hash2action(steps_url, all_step_str2action)
+        possible_moves = find_next_steps_from_db(steps_url, db)
 
         if len(possible_moves) > 0:
             next_move = possible_moves[0]
