@@ -103,3 +103,7 @@ python3 ./write_board2action_into_db.py
 python3 ./tornado_server.py 80 debug
 ```
 open url: http://127.0.0.1/web/gomoku.html
+
+# Server Maintenance
+create .plist files to start cloudflare tunnel and gomoku backend service, place them in folder /Library/LaunchDaemons/
+
