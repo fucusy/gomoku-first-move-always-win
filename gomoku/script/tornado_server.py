@@ -9,13 +9,12 @@ from tornado import web
 from tornado.log import app_log
 
 from divided_solution_manager import find_next_steps_from_db
-from gomoku_llm.train_transformer import predict_next_token
 import json
 
 options.options["log_file_prefix"] = "tornado_log"
 options.parse_command_line()
 
-db = leveldb.LevelDB('/Users/qiang/Documents/github/gomoku-first-move-always-win/gomoku/script/leveldb_web.db')
+db = leveldb.LevelDB('leveldb.db')
 BOARD_SIZE = 15
 
 
@@ -92,33 +91,7 @@ def best_heuristic_black_move(token_list):
             best_move = pos
     return best_move
 
-class WhiteNextStepHandler(tornado.web.RequestHandler):
-
-    def set_default_headers(self):
-        # Allow all origins to access this resource
-        self.set_header("Access-Control-Allow-Origin", "*")
-        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
-        self.set_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-
-    def options(self):
-        # no body
-        self.set_status(204)
-        self.finish()
-
-    def get(self):
-        self.set_header('Content-type', 'application/json')
-        self.set_header('Access-Control-Allow-Origin',  '*')
-        steps_url = self.get_argument("stepsString").strip("_")
-        next_token = predict_next_token(steps_url, "gomoku_llm/models/transformer_1000.pt")
-        next_move = next_token
-        x = ord(next_move[0]) - ord('a')
-        y = int(next_move[1:]) - 1
-        response = '{"input": "%s", "x": %s, "y": %s}' % (steps_url, x, y)
-        self.write(str.encode(response))
-
-
-
-class BlackNextStepHandler(tornado.web.RequestHandler):
+class MainHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self):
         # Allow all origins to access this resource
@@ -167,7 +140,7 @@ class BlackNextStepHandler(tornado.web.RequestHandler):
 
 
 def make_app():
-    handlers = [(r"/white_next_step", WhiteNextStepHandler), (r"/next_step", BlackNextStepHandler) ]
+    handlers = [(r"/next_step", MainHandler) ]
     handlers.append((r'/(.*)', web.StaticFileHandler, {'path': "./web/"}))
     return tornado.web.Application(handlers)
 
