@@ -140,7 +140,7 @@ class MainHandler(tornado.web.RequestHandler):
 
 
 def make_app():
-    handlers = [(r"/next_step", MainHandler) ]
+    handlers = [(r"/next_step", MainHandler), (r"/", MainHandler) ]
     handlers.append((r'/(.*)', web.StaticFileHandler, {'path': "./web/"}))
     return tornado.web.Application(handlers)
 
